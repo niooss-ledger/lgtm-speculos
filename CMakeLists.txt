@@ -4,7 +4,8 @@ project(Speculos C)
 
 include(ExternalProject)
 
-set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
+#set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
+set(CMAKE_C_COMPILER clang)
 set(CMAKE_EXE_LINKER_FLAGS -static)
 
 enable_testing()
