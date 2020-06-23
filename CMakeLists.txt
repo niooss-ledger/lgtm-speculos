@@ -4,15 +4,24 @@ project(Speculos C)
 
 include(ExternalProject)
 
-#set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
-set(CMAKE_C_COMPILER clang)
+# Try using clang with "cmake -DCMAKE_C_COMPILER=clang"
+set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
 set(CMAKE_EXE_LINKER_FLAGS -static)
 
 enable_testing()
 
 option(WITH_VNC "Support for VNC" OFF)
 
-add_compile_options(-mthumb -W -Wall -fPIC)
+add_compile_options(-W -Wall -fPIC)
+if (CMAKE_C_COMPILER_ID MATCHES "(Apple)?[Cc]lang")
+  # armv7l-unknown-linux-gnueabihf
+  #add_compile_options(-ccc-gcc-name arm-linux-gnueabihf-gcc -mcpu=armv7m)
+  add_compile_options(-target armv7m-linux-gnueabihf -I/usr/arm-linux-gnueabihf/include)
+  add_link_options(-target armv7m-linux-gnueabihf -ccc-gcc-name arm-linux-gnueabihf-gcc)
+else ()
+  add_compile_options(-mthumb)
+endif ()
+
 add_definitions(-DOS_LITTLE_ENDIAN -DNATIVE_64BITS)
 
 option(
@@ -63,7 +72,7 @@ else()
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/cmocka
     URL https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
     URL_HASH SHA256=f0ccd8242d55e2fd74b16ba518359151f6f8383ff8aef4976e48393f77bba8b6
-    CMAKE_ARGS += -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_C_FLAGS=-mthumb -DWITH_STATIC_LIB=true -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
+    CMAKE_ARGS += -DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc -DCMAKE_C_FLAGS=-mthumb -DWITH_STATIC_LIB=true -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
   )
 endif()
 
