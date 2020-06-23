@@ -36,7 +36,7 @@ jobs:
         make -C build/ test
         pytest
 
-    - name: Rebuild with coverage instrumentation
+    - name: Rebuild with code coverage instrumentation
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: |
