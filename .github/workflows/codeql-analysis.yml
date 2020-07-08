@@ -16,8 +16,8 @@ jobs:
 
     # Use https://hub.docker.com/r/ledgerhq/speculos-builder which has all the
     # required dependencies
-    container:
-      image: docker://ledgerhq/speculos-builder:latest
+    #container:
+    #  image: docker://ledgerhq/speculos-builder:latest
 
     steps:
     - name: Checkout repository
@@ -46,7 +46,12 @@ jobs:
     # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
-    - run: |
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y cmake gcc-arm-linux-gnueabihf libc6-dev-armhf-cross libvncserver-dev qemu-user-static wget
+    - name: Build the C files
+      run: |
         cmake -Bbuild -H. -DPRECOMPILED_DEPENDENCIES_DIR=/install -DWITH_VNC=1
         make -C build clean
         make -C build
