@@ -49,7 +49,7 @@ jobs:
     - name: Install build dependencies
       run: |
         sudo apt-get update
-        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y cmake gcc-arm-linux-gnueabihf libc6-dev-armhf-cross libvncserver-dev qemu-user-static wget
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y gcc-arm-linux-gnueabihf libc6-dev-armhf-cross libvncserver-dev qemu-user-static
     - name: Build the C files
       run: |
         cmake -Bbuild -H. -DWITH_VNC=1
